@@ -1,0 +1,16 @@
+[workspace]
+members = [
+    "wasm"
+]
+
+[package]
+name = "poc-wasm-nats-platform"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.102"
+async-nats = "0.46.0"
+tokio = { version = "1.50.0", features = ["time", "macros", "rt", "rt-multi-thread", "fs", "net"] }
+wasmtime = "43.0.0"
+wasmtime-wasi = "43.0.0"
