@@ -10,6 +10,9 @@ struct State {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    let mut args = std::env::args();
+    let _ = args.next(); // skip executable name
+
     let nc = async_nats::connect("localhost:4222").await?;
 
     let mut config = Config::new();
@@ -38,7 +41,9 @@ async fn main() -> anyhow::Result<()> {
     //     )
     // "#;
     // let module = Module::new(&engine, wat)?;
-    let module = Module::from_file(&engine, "target/wasm32-wasip1/debug/wasm.wasm")?;
+    // let module = Module::from_file(&engine, "target/wasm32-wasip1/debug/wasm.wasm")?;
+    let file = args.next().expect("wasm file path not provided");
+    let module = Module::from_file(&engine, file)?;
 
     let mut linker = Linker::new(&engine);
     wasmtime_wasi::p1::add_to_linker_async(&mut linker, |cx: &mut State| &mut cx.wasi)?;
